@@ -27,6 +27,12 @@ $(document).ready(function () {
         return false;
     });
 
+    $(document).bind("ajaxSend", function () {
+        $("#loadingGif").show();
+    }).bind("ajaxComplete", function () {
+        $("#loadingGif").hide();
+    })
+
     // TODO: write addGoogleMaps function
 
     //Need this variable so that I can close all the unwanted infoWindow for maps

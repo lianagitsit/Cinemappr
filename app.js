@@ -44,6 +44,7 @@ app.post('/search', urlencodedParser, (req, res) => {
 
     reqPromise('http://data.tmsapi.com/v1.1/movies/showings?startDate=' + date + '&zip=' + zip + '&api_key=2tevkc8394dkkyk4ezzc8t5m')
 
+
     .then((response) => {
         res.json(response)
     }).catch((err) => {
@@ -56,6 +57,7 @@ app.get('/getData', (req, res) => {
     const date = searchObj.date
     const zip = searchObj.zipcode
     reqPromise('http://data.tmsapi.com/v1.1/movies/showings?startDate=' + date + '&zip=' + zip + '&api_key=2tevkc8394dkkyk4ezzc8t5m')
+
 
     .then((response) => {
         res.json(response)
