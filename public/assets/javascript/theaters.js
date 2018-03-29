@@ -220,6 +220,69 @@ $(document).ready(function () {
             var myTheaterNameForGooglePlaces = my_theater_name.replace(/\s/g, "+");
             console.log(myTheaterNameForGooglePlaces);
 
+            // Query Google Maps to geocode zipcode 
+            var geocoder = new google.maps.Geocoder();
+            var zipcode1 = $("#resubmit-search").find("input[name='zipcode']").val()
+            console.log(`zipcode1: ${zipcode1}`);
+            var geocodeQueryURL = "http://maps.googleapis.com/maps/api/geocode/json?address=" + zipcode1 + "&key=AIzaSyAsCHeUDG0zhBRHXHgYQM2dIls9fYXgy-k";
+
+            var lat = "";
+            var lng = "";
+            geocoder.geocode({'address': zipcode1}, function(results, status){
+                console.log("geocoder added");
+                console.log(results);
+                console.log(status);
+                if (status == google.maps.GeocoderStatus.OK) {
+                    lat = results[0].geometry.location.lat().toString();
+                    lng = results[0].geometry.location.lng().toString();
+
+                    console.log("lat: ", lat);
+                    console.log("lng: ", lng);
+
+                    // var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=' + myTheaterNameForGooglePlaces + '&location=' + lat + ',' + lng + '&key=AIzaSyAsCHeUDG0zhBRHXHgYQM2dIls9fYXgy-k'
+                    var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=' + myTheaterNameForGooglePlaces + '&location=' + lat + ',' + lng + '&rankby=distance&key=AIzaSyAsCHeUDG0zhBRHXHgYQM2dIls9fYXgy-k'
+
+                    // 530e369a263ef99c35face8a2433c85f51330ca2
+        
+                    $.ajax({
+                        url: queryGooglePlaces,
+                        type: "GET"
+                    }).then(function (event) {
+                        console.log(event);
+        
+                        // function to place all the markers on our theater locations
+                        theaterMarkers = { lat: event.results[0].geometry.location.lat, lng: event.results[0].geometry.location.lng };
+                        var marker = new google.maps.Marker({
+                            position: { lat: event.results[0].geometry.location.lat, lng: event.results[0].geometry.location.lng },
+                            map: map,
+                        })
+        
+                        //this will recenter the google maps to the last marker placed
+                        map.setCenter({ lat: event.results[0].geometry.location.lat, lng: event.results[0].geometry.location.lng });
+                        //adding infoWindow to display direction icons, address, and theater names
+                        var contentString = "<h3>" + my_theater_name + "</h3>" + '<button id="directions" style="cursor:pointer;" onClick="window.open(\'https://www.google.com/maps/dir/' + myTheaterNameForGooglePlaces + '\',\'_newtab\');">Directions</button>'
+                        var infoWindow = new google.maps.InfoWindow({})
+        
+                        google.maps.event.addListener(marker, 'click', (function (marker, contentString, infoWindow) {
+                            return function () {
+        
+                                if (openInfoWindow)
+                                    openInfoWindow.close();
+        
+                                infoWindow.setContent(contentString);
+                                openInfoWindow = infoWindow;
+                                infoWindow.open(map, marker);
+        
+                            };
+                        })(marker, contentString, infoWindow));
+        
+                    })
+    
+                 } else {
+                   alert("Geocode was not successful for the following reason: " + status);
+                 }
+            //    alert('Latitude: ' + lat + ' Logitude: ' + lng);
+            })
 
             // var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + myTheaterNameForGooglePlaces + '&key=AIzaSyD9hHd2f2VIqsuz_zHv5m64UXiZgom6sLY'
             //AIzaSyASKnjScxmEcAhuUUchHloDaPz3X3q7KV0
@@ -229,43 +292,45 @@ $(document).ready(function () {
             // var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + myTheaterNameForGooglePlaces + '&key=AIzaSyDBkZBVW-dII2-MbnRtJL8Qk99eMR-sjbs'
             
             // Sam's API Key: AIzaSyAsCHeUDG0zhBRHXHgYQM2dIls9fYXgy-k
-            var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + myTheaterNameForGooglePlaces + '&key=AIzaSyAsCHeUDG0zhBRHXHgYQM2dIls9fYXgy-k'
 
             // 530e369a263ef99c35face8a2433c85f51330ca2
 
-            $.ajax({
-                url: queryGooglePlaces,
-                type: "GET"
-            }).then(function (event) {
-                console.log(event);
+            // var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=' + myTheaterNameForGooglePlaces + '&key=AIzaSyAsCHeUDG0zhBRHXHgYQM2dIls9fYXgy-k'
 
-                // function to place all the markers on our theater locations
-                theaterMarkers = { lat: event.results[0].geometry.location.lat, lng: event.results[0].geometry.location.lng };
-                var marker = new google.maps.Marker({
-                    position: { lat: event.results[0].geometry.location.lat, lng: event.results[0].geometry.location.lng },
-                    map: map,
-                })
 
-                //this will recenter the google maps to the last marker placed
-                map.setCenter({ lat: event.results[0].geometry.location.lat, lng: event.results[0].geometry.location.lng });
-                //adding infoWindow to display direction icons, address, and theater names
-                var contentString = "<h3>" + my_theater_name + "</h3>" + '<button id="directions" style="cursor:pointer;" onClick="window.open(\'https://www.google.com/maps/dir/' + myTheaterNameForGooglePlaces + '\',\'_newtab\');">Directions</button>'
-                var infoWindow = new google.maps.InfoWindow({})
+            // $.ajax({
+            //     url: queryGooglePlaces,
+            //     type: "GET"
+            // }).then(function (event) {
+            //     console.log(event);
 
-                google.maps.event.addListener(marker, 'click', (function (marker, contentString, infoWindow) {
-                    return function () {
+            //     // function to place all the markers on our theater locations
+            //     theaterMarkers = { lat: event.results[0].geometry.location.lat, lng: event.results[0].geometry.location.lng };
+            //     var marker = new google.maps.Marker({
+            //         position: { lat: event.results[0].geometry.location.lat, lng: event.results[0].geometry.location.lng },
+            //         map: map,
+            //     })
 
-                        if (openInfoWindow)
-                            openInfoWindow.close();
+            //     //this will recenter the google maps to the last marker placed
+            //     map.setCenter({ lat: event.results[0].geometry.location.lat, lng: event.results[0].geometry.location.lng });
+            //     //adding infoWindow to display direction icons, address, and theater names
+            //     var contentString = "<h3>" + my_theater_name + "</h3>" + '<button id="directions" style="cursor:pointer;" onClick="window.open(\'https://www.google.com/maps/dir/' + myTheaterNameForGooglePlaces + '\',\'_newtab\');">Directions</button>'
+            //     var infoWindow = new google.maps.InfoWindow({})
 
-                        infoWindow.setContent(contentString);
-                        openInfoWindow = infoWindow;
-                        infoWindow.open(map, marker);
+            //     google.maps.event.addListener(marker, 'click', (function (marker, contentString, infoWindow) {
+            //         return function () {
 
-                    };
-                })(marker, contentString, infoWindow));
+            //             if (openInfoWindow)
+            //                 openInfoWindow.close();
 
-            })
+            //             infoWindow.setContent(contentString);
+            //             openInfoWindow = infoWindow;
+            //             infoWindow.open(map, marker);
+
+            //         };
+            //     })(marker, contentString, infoWindow));
+
+            // })
 
             //adding the spinning wheel
 
