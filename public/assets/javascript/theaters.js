@@ -26,6 +26,12 @@ $(document).ready(function () {
         return false;
     });
 
+    $(document).bind("ajaxSend", function () {
+        $("#loadingGif").show();
+    }).bind("ajaxComplete", function () {
+        $("#loadingGif").hide();
+    })
+
     // TODO: write addGoogleMaps function
 
     //Need this variable so that I can close all the unwanted infoWindow for maps
@@ -53,7 +59,7 @@ $(document).ready(function () {
     $("#resubmit-search").submit(function (event) {
         event.preventDefault();
         $("#movies").empty();
-        
+
         var $form = $(this),
             zip = $form.find("input[name='zipcode']").val(),
             date = $form.find("input[name='date']").val(),
@@ -227,7 +233,7 @@ $(document).ready(function () {
             // var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + myTheaterNameForGooglePlaces + '&key=AIzaSyC2pDiPtNXvox6k0Cgit7UHEEvGTjnkG8s'
 
             // var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + myTheaterNameForGooglePlaces + '&key=AIzaSyDBkZBVW-dII2-MbnRtJL8Qk99eMR-sjbs'
-            
+
             // Sam's API Key: AIzaSyAsCHeUDG0zhBRHXHgYQM2dIls9fYXgy-k
             var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + myTheaterNameForGooglePlaces + '&key=AIzaSyAsCHeUDG0zhBRHXHgYQM2dIls9fYXgy-k'
 
