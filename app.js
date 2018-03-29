@@ -26,6 +26,8 @@ app.post('/theaters', urlencodedParser, (req, res) => {
 
 app.get('/location', (req, res) => res.json(searchObj))
 
+
+// FOR TESTING AND DEPLOYMENT ONLY; DO NOT USE FOR DEVELOPMENT: 6gv5euu66tqah8x55pzbp666
 app.post('/search', urlencodedParser, (req, res) => {
     searchObj = { 
         zipcode: req.body.zipcode,
@@ -38,7 +40,7 @@ app.post('/search', urlencodedParser, (req, res) => {
     const date = searchObj.date
     const zip = searchObj.zipcode
 
-    reqPromise('http://data.tmsapi.com/v1.1/movies/showings?startDate=' + date + '&zip=' + zip + '&api_key=6gv5euu66tqah8x55pzbp666')
+    reqPromise('http://data.tmsapi.com/v1.1/movies/showings?startDate=' + date + '&zip=' + zip + '&api_key=8dyfezutfxys5435q4ehcqkp')
 
     .then((response) => {
         res.json(response)
@@ -51,7 +53,7 @@ app.post('/search', urlencodedParser, (req, res) => {
 app.get('/getData', (req, res) => {
     const date = searchObj.date
     const zip = searchObj.zipcode
-    reqPromise('http://data.tmsapi.com/v1.1/movies/showings?startDate=' + date + '&zip=' + zip + '&api_key=6gv5euu66tqah8x55pzbp666')
+    reqPromise('http://data.tmsapi.com/v1.1/movies/showings?startDate=' + date + '&zip=' + zip + '&api_key=8dyfezutfxys5435q4ehcqkp')
 
     .then((response) => {
         res.json(response)

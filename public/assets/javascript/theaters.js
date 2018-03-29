@@ -229,7 +229,10 @@ $(document).ready(function () {
             // var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + myTheaterNameForGooglePlaces + '&key=AIzaSyDBkZBVW-dII2-MbnRtJL8Qk99eMR-sjbs'
             
             // Sam's API Key: AIzaSyAsCHeUDG0zhBRHXHgYQM2dIls9fYXgy-k
-            var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + myTheaterNameForGooglePlaces + '&key=AIzaSyC6tw2d0iM0eNyM1TtRCz6HEK-0jLHn1P4'
+
+            // FOR TESTING AND DEPLOYMENT ONLY, DO NOT USE FOR DEVELOPMENT: AIzaSyC6tw2d0iM0eNyM1TtRCz6HEK-0jLHn1P4
+
+            var queryGooglePlaces = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + myTheaterNameForGooglePlaces + '&key='
 
             // 530e369a263ef99c35face8a2433c85f51330ca2
 
